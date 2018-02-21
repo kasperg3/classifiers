@@ -53,7 +53,7 @@ def svm_loss_naive(W, X, y, reg):
   #make dW an average
   dW /= num_train
 
-  # Add regularication to the loss
+  # Add regularization to dW
   dW += reg * np.sum(W * W)
 
   #############################################################################
@@ -91,6 +91,7 @@ def svm_loss_vectorized(W, X, y, reg):
   num_train = X.shape[0]
   delta = 1
 
+
   scores = X.dot(W)
   correct_scores = np.matrix(scores[np.arange(scores.shape[0]),y])
   trans_correct = np.transpose(correct_scores)
@@ -117,5 +118,22 @@ def svm_loss_vectorized(W, X, y, reg):
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
+
+
+  #counter = max_margin
+  #counter[max_margin > 0] = 1
+
+  counter = max_margin
+  counter = np.where(max_margin > 0, 1, counter)
+
+  number_of_counts = np.sum(counter,axis=1)
+  #Reshaping (500,1) to (500,), making the multiplication possible
+  number_of_counts = number_of_counts.reshape(num_train,)
+  counter[np.arange(num_train),y] = -number_of_counts
+  X_trans = np.transpose(X)
+  dW = X_trans.dot(counter)
+
+  dW /= num_train
+  dW += reg * np.sum(W * W)
 
   return loss, dW
