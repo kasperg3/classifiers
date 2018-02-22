@@ -54,7 +54,7 @@ def svm_loss_naive(W, X, y, reg):
   dW /= num_train
 
   # Add regularication to the loss
-  dW += reg * W
+  dW += reg * np.sum(W * W)
 
   #############################################################################
   # TODO:                                                                     #
@@ -72,7 +72,6 @@ def svm_loss_naive(W, X, y, reg):
 def svm_loss_vectorized(W, X, y, reg):
   """
   Structured SVM loss function, vectorized implementation.
-
   Inputs and outputs are the same as svm_loss_naive.
   """
   loss = 0.0
@@ -87,6 +86,22 @@ def svm_loss_vectorized(W, X, y, reg):
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
+  #num_classes = W.shape[1]
+  num_train = X.shape[0]
+  delta = 1
+
+
+  scores = X.dot(W)
+  correct_scores = np.matrix(scores[np.arange(scores.shape[0]),y])
+  trans_correct = np.transpose(correct_scores)
+  margin = scores - trans_correct + delta
+  max_margin = np.maximum(0,margin)
+  max_margin[np.arange(num_train),y] = 0
+  loss = (np.sum(max_margin))/num_train
+
+  # Add regularization to the loss.
+  loss += reg * np.sum(W * W)
+
 
 
   #############################################################################
@@ -98,9 +113,26 @@ def svm_loss_vectorized(W, X, y, reg):
   # to reuse some of the intermediate values that you used to compute the     #
   # loss.                                                                     #
   #############################################################################
-  pass
+  #pass
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
+
+
+  #counter = max_margin
+  #counter[max_margin > 0] = 1
+
+  counter = max_margin
+  counter = np.where(max_margin > 0, 1, counter)
+
+  number_of_counts = np.sum(counter,axis=1)
+  #Reshaping (500,1) to (500,), making the multiplication possible
+  number_of_counts = number_of_counts.reshape(num_train,)
+  counter[np.arange(num_train),y] = -number_of_counts
+  X_trans = np.transpose(X)
+  dW = X_trans.dot(counter)
+
+  dW /= num_train
+  dW += reg * np.sum(W * W)
 
   return loss, dW
