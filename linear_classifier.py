@@ -53,11 +53,9 @@ class LinearClassifier(object):
       # Hint: Use np.random.choice to generate indices. Sampling with         #
       # replacement is faster than sampling without replacement.              #
       #########################################################################
-<<<<<<< HEAD
+
       pass
 
-
-=======
       index = []
 
       for lel in range(0,batch_size):
@@ -65,7 +63,7 @@ class LinearClassifier(object):
 
       X_batch = X[index]
       y_batch = y[index]
->>>>>>> SVM_KW
+
 
       #########################################################################
       #                       END OF YOUR CODE                                #
