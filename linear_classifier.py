@@ -103,11 +103,17 @@ class LinearClassifier(object):
       class.
     """
     y_pred = np.zeros(X.shape[0])
+
+
     ###########################################################################
     # TODO:                                                                   #
     # Implement this method. Store the predicted labels in y_pred.            #
     ###########################################################################
-    pass
+
+    for index in range(X.shape[0]):
+      scores = np.sum(np.transpose(self.W) * X[index],axis=1)
+      y_pred[index] = np.argmax(scores)
+
     ###########################################################################
     #                           END OF YOUR CODE                              #
     ###########################################################################
