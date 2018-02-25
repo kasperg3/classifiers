@@ -53,8 +53,13 @@ def svm_loss_naive(W, X, y, reg):
   #make dW an average
   dW /= num_train
 
+<<<<<<< HEAD
   # Add regularication to the loss
   dW += reg * np.sum(W * W)
+=======
+  # Add regularization to dW (the differentiatied loss with respect to W)
+  dW += 2 * reg * W
+>>>>>>> SVM_KW
 
   #############################################################################
   # TODO:                                                                     #
@@ -133,6 +138,12 @@ def svm_loss_vectorized(W, X, y, reg):
   dW = X_trans.dot(counter)
 
   dW /= num_train
+<<<<<<< HEAD
   dW += reg * np.sum(W * W)
 
   return loss, dW
+=======
+  dW += 2* reg * W
+
+  return loss, dW
+>>>>>>> SVM_KW
