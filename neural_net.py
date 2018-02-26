@@ -131,14 +131,17 @@ class TwoLayerNet(object):
     input - fully connected layer (layer1) - ReLU (layer2) - fully connected layer (layer3)- softmax (layer4)- output
     """
 
+    p_scores[np.arange(N), y] -= 1
+    p_scores /= N
+
+
     #layer 4 er 1 pga dL/dL = 1
     grad_layer4 = 1
-    p_scores[np.arange(N), y] -= 1
 
     grad_layer3 = p_scores * grad_layer4 #kædereglen
 
-    #relu: layer2 = gradient(layer3) * 
-    grad_layer2 =
+    #relu: layer2 = gradient(layer3) *
+    grad_layer2 = grad_layer3
 
     #############################################################################
     #                              END OF YOUR CODE                             #
