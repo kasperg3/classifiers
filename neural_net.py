@@ -76,7 +76,12 @@ class TwoLayerNet(object):
     # Store the result in the scores variable, which should be an array of      #
     # shape (N, C).                                                             #
     #############################################################################
-    pass
+
+    #first fully connected layer
+    scores = np.dot(X,W1) + b1
+    scores = np.maximum(0, scores)
+    scores = np.dot(scores,W2) + b2
+
     #############################################################################
     #                              END OF YOUR CODE                             #
     #############################################################################
@@ -93,7 +98,22 @@ class TwoLayerNet(object):
     # in the variable loss, which should be a scalar. Use the Softmax           #
     # classifier loss.                                                          #
     #############################################################################
-    pass
+    # loss function
+    p_scores = np.exp(scores) / np.sum(np.exp(scores), axis=1, keepdims=True)
+
+    # calculates all yi loss scores
+    p_scores_y = p_scores[np.arange(X.shape[0]), y]
+
+    # sum of all loss' of yi
+    loss = -1 * np.sum(np.log(p_scores_y))
+
+    # Right now the loss is a sum over all training examples, but we want it
+    # to be an average instead so we divide by num_train.
+    loss /= X.shape[0]
+    # Add regularization to the loss.
+    loss += reg * np.sum(W1 * W1) + reg * np.sum(W2 * W2)
+
+
     #############################################################################
     #                              END OF YOUR CODE                             #
     #############################################################################
@@ -105,7 +125,21 @@ class TwoLayerNet(object):
     # and biases. Store the results in the grads dictionary. For example,       #
     # grads['W1'] should store the gradient on W1, and be a matrix of same size #
     #############################################################################
-    pass
+
+
+    """
+    input - fully connected layer (layer1) - ReLU (layer2) - fully connected layer (layer3)- softmax (layer4)- output
+    """
+
+    #layer 4 er 1 pga dL/dL = 1
+    grad_layer4 = 1
+    p_scores[np.arange(N), y] -= 1
+
+    grad_layer3 = p_scores * grad_layer4 #kædereglen
+
+    #relu: layer2 = gradient(layer3) * 
+    grad_layer2 =
+
     #############################################################################
     #                              END OF YOUR CODE                             #
     #############################################################################
